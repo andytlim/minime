@@ -11,11 +11,11 @@ npm install minime -g
 {
     "jsRoot": "path/to/js",
     "jsMap": {
-        "target.js" : [ "component-1.js", "component-2.js" ]
+        "app.js" : [ "part1.js", "part2.js", ... ]
     },
     "cssRoot": "path/to/css",
     "cssMap": {
-        "target.css" : [ "component-1.css", "component-2.css" ]
+        "app.css" : [ "part1.css", "part2.css", ... ]
     }
 }
 ```
