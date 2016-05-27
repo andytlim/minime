@@ -1,0 +1,14 @@
+{
+  "name": "minime",
+  "keywords": ["minifier", "uglify"],
+  "version": "1.0.4",
+  "preferGlobal": true,
+  "bin": {
+    "minime": "./index.js"
+  },
+  "dependencies": {
+    "minifier": "^0.7.1",
+    "uglify-js": "^2.4.24",
+    "uglifycss": "0.0.18"
+  }
+}
