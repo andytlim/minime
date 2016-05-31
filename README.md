@@ -24,3 +24,6 @@ npm install minime -g
 ```shell
 minime
 ```
+
+#### Improvements?
+-  Please shoot any suggestions you have to andytlim@gmail.com. Or better yet, help contribute!
