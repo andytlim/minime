@@ -6,6 +6,16 @@ Minifier for front-end assets
 npm install minime -g
 ```
 
+#### Suggested folder setup 
+```shell
+# Right now minime only supports 1 js and 1 css root, future enhancements will expand to any number of directories
+/assets
+    /js
+        /src
+    /css
+        /src
+```
+
 #### Add minime.json to project
 ```javascript
 {
@@ -36,3 +46,6 @@ npm install minime -g
 ```shell
 minime
 ```
+
+#### Improvements?
+-  Please shoot any suggestions you have to andytlim@gmail.com. Or better yet, help contribute!
