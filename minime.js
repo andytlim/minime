@@ -27,7 +27,7 @@ logger.level = 'info';
 program
     .usage('[options]')
     .option('-f, --file [location]', 'minime.json location (if unspecified, will use current directory)', 'minime.json')
-    .option('-p, --production', 'only minified files will be built')
+    .option('-p, --production', 'minified files will be built (default is concat + uglify only)')
     .parse(process.argv);
 
 /*******************************************************************************
