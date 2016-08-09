@@ -36,7 +36,7 @@ program
 var minime;
 fs.readFile(program.file, 'utf8', function (err,data) {
     if (err) {
-      return logger.info('Unable to find minime.json!\n' + err);
+        return logger.info('Unable to find minime.json!\n' + err);
     }
     minime = JSON.parse(data);
 
