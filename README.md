@@ -8,7 +8,14 @@ npm install minime -g
 
 #### Updates
 - Redesigned minime.json. Please see new format below!
-- The command now has a couple options (-p and -f, use -h to see options)
+- The command now has the following options 
+
+| Option  | Description |
+| --- | --- | 
+| -f [location] | minime.json location (if unspecified, will use current directory) | 
+| -r | create all folders in path if they do not exist | 
+| -p | js files will be minified (default: concat, uglify only) | 
+
 - Please use the new version and let me know if you would like any better enhancements
 
 #### Add minime.json to project
