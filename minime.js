@@ -5,11 +5,12 @@ process.bin = process.title = 'minime';
 /*******************************************************************************
  * Imports
  ******************************************************************************/
-var program = require('commander');
-var fs = require('fs');
-var UglifyJS = require('uglify-js');
-var uglifycss = require('uglifycss');
-var winston = require('winston');
+var program = require('commander')
+  , fs = require('fs')
+  , mkdirp = require('mkdirp')
+  , uglifyjs = require('uglify-js')
+  , uglifycss = require('uglifycss')
+  , winston = require('winston');
 
 /*******************************************************************************
  * Logging Level
@@ -27,7 +28,8 @@ logger.level = 'info';
 program
     .usage('[options]')
     .option('-f, --file [location]', 'minime.json location (if unspecified, will use current directory)', 'minime.json')
-    .option('-p, --production', 'minified files will be built (default is concat + uglify only)')
+    .option('-r, --recursive', 'create all folders in path if they do not exist')
+    .option('-p, --production', 'js files will be minified (default: concat, uglify only)')
     .parse(process.argv);
 
 /*******************************************************************************
@@ -47,7 +49,7 @@ fs.readFile(program.file, 'utf8', function (err,data) {
     logger.info('----------------------');
     for (var i = 0; i < minime.js.length; i++) {
         logger.info('Minifying js assets in ' + minime.js[i].source + '...');
-        minifyJS(minime.js[i], program.production);
+        minifyJS(minime.js[i]);
     }
 
     logger.info('-----------------------');
@@ -65,14 +67,14 @@ fs.readFile(program.file, 'utf8', function (err,data) {
 /*******************************************************************************
  * Script Functions
  ******************************************************************************/
-function minifyJS(js, p) {
+function minifyJS(js) {
     for (var target in js.map) {
         var input = buildPath(js.source, js.map[target]);        
         var result;        
         
         // if production is not enabled, create a beautified version of the code
-        if (!p) {
-            result = UglifyJS.minify(input, {
+        if (!program.production) {
+            result = uglifyjs.minify(input, {
                 output : {
                     beautify : true
                 },
@@ -80,7 +82,7 @@ function minifyJS(js, p) {
             });            
         }
         else {
-            result = UglifyJS.minify(input, {});
+            result = uglifyjs.minify(input, {});
         }
         fs.writeFileSync(buildPath(js.target, target), result.code);
         
@@ -100,6 +102,9 @@ function minifyCSS(css, options) {
 }
 
 function buildPath(root, files) {
+    if (program.recursive)
+      mkdirp.sync(root, {});
+  
     if (files.constructor !== Array)
         return root + "/" + files;
 
