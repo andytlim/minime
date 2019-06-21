@@ -11,17 +11,6 @@ const program = require('commander');
 const mkdirp = require('mkdirp');
 const uglifyjs = require('uglify-js');
 const uglifycss = require('uglifycss');
-const winston = require('winston');
-
-/*******************************************************************************
- * Logging Level
- ******************************************************************************/
-let logger = new (winston.Logger)({
-	transports: [
-		new (winston.transports.Console)()
-	]
-});
-logger.level = 'info';
 
 /*******************************************************************************
  * Option Arguments
@@ -37,40 +26,40 @@ program
  * Load minime.json
  ******************************************************************************/
 const configFile = program.file.endsWith('.json') ? program.file : program.file + '/minime.json';
-logger.info(`Looking for ${configFile}`);
+console.info(`Looking for ${configFile}`);
 
 fs.readFile(configFile, 'utf8', function (err, data) {
 	if (err)
-		logger.info('Unable to find minime.json!\n' + err);
+		console.info('Unable to find minime.json!\n' + err);
 	else {
 		const minime = JSON.parse(data);
 
-		if (program.production) logger.info('Building new assets in production mode...');
+		if (program.production) console.info('Building new assets in production mode...');
 
-		logger.info('----------------------');
-		logger.info('*      js build      *');
-		logger.info('----------------------');
+		console.info('----------------------');
+		console.info('*      js build      *');
+		console.info('----------------------');
 		if (minime.js.length !== undefined)
 			for (const jsSet of minime.js) {
-				logger.info(`Minifying js assets in ${jsSet.source}...`);
+				console.info(`Minifying js assets in ${jsSet.source}...`);
 				minifyJS(jsSet);
 			}
 		else
-			logger.info('Unabled to minify js, please make sure {js: []} exists');
+			console.info('Unabled to minify js, please make sure {js: []} exists');
 
-		logger.info('-----------------------');
-		logger.info('*      css build      *');
-		logger.info('-----------------------');
+		console.info('-----------------------');
+		console.info('*      css build      *');
+		console.info('-----------------------');
 		if (minime.js.length !== undefined)
 			for (const cssSet of minime.css) {
-				logger.info(`Minifying css assets in ${cssSet.source}...`);
+				console.info(`Minifying css assets in ${cssSet.source}...`);
 				minifyCSS(cssSet, {
 					maxLineLen: 0,
 					expandVars: true
 				});
 			}
 		else
-			logger.info('Unabled to minify css, please make sure {css: []} exists');
+			console.info('Unabled to minify css, please make sure {css: []} exists');
 	}
 });
 
@@ -95,18 +84,18 @@ function minifyJS(jsSet) {
 
 		fs.writeFileSync(buildPath(jsSet.target, target), result.code);
 
-		logger.info(target + ' created.');
+		console.info(target + ' created.');
 	}
-	logger.info('File(s) are available in ' + jsSet.target + '.');
+	console.info('File(s) are available in ' + jsSet.target + '.');
 }
 
 function minifyCSS(cssSet, options) {
 	for (let target of Object.keys(cssSet.map)) {
 		let result = uglifycss.processFiles(buildPath(cssSet.source, cssSet.map[target]), options);
 		fs.writeFileSync(buildPath(cssSet.target, target), result);
-		logger.info(target + ' created.');
+		console.info(target + ' created.');
 	}
-	logger.info('File(s) are available in ' + cssSet.target + '.');
+	console.info('File(s) are available in ' + cssSet.target + '.');
 }
 
 function buildPath(root, files) {
