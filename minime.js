@@ -9,7 +9,7 @@ const fs = require('fs');
 
 const program = require('commander');
 const mkdirp = require('mkdirp');
-const uglifyjs = require('uglify-js');
+const uglifyes = require('uglify-es');
 const uglifycss = require('uglifycss');
 
 /*******************************************************************************
@@ -73,14 +73,15 @@ function minifyJS(jsSet) {
 
 		// if production is not enabled, create a beautified version of the code
 		if (!program.production)
-			result = uglifyjs.minify(input, {
+			result = uglifyes.minify(input, {
 				output: {
 					beautify: true
 				},
-				compress: false
+				compress: false,
+				mangle: false
 			});
 		else
-			result = uglifyjs.minify(input, {});
+			result = uglifyes.minify(input, {});
 
 		fs.writeFileSync(buildPath(jsSet.target, target), result.code);
 
